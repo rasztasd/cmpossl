@@ -10,12 +10,9 @@ else
 #   LIB=lib
 endif
 
-ifeq ($(OPENSSL_DIR),)
-     OPENSSL_DIR=.
-endif
 OPENSSL_VERSION=$(shell fgrep OPENSSL_VERSION_NUMBER $(OPENSSL_DIR)/include/openssl/opensslv.h | sed -r 's/.*?NUMBER\s+//; s/L.*//')
 ifeq ($(findstring 0x,$(OPENSSL_VERSION)),)
-    $(warning cannot determine version of OpenSSL in directory '$(OPENSSL_DIR)')
+    $(error cannot determine version of OpenSSL in directory '$(OPENSSL_DIR)')
 endif
 ifeq ($(shell test $$(printf "%d" $(OPENSSL_VERSION)) -ge $$(printf "%d" 0x10102000); echo $$?),0)
     OSSL_VERSION_QUIRKS+=-D'DEPRECATEDIN_1_2_0(f)='
@@ -52,7 +49,7 @@ $(CMP_LIB): $(CMP_HDRS) $(CMP_SRCS)
 	@mkdir -p $(CMP_OUT)
 	@mkdir -p $(CMP_INC)/openssl
 	@ln -srft $(CMP_INC)/openssl $(CMP_HDRS)
-	$(CC) $(CFLAGS) $(CMP_HDRS_INC) $(CMP_SRCS) -shared -o $@
+	C_INCLUDE_PATH=$(OPENSSL_DIR)/include $(CC) $(CFLAGS) $(CMP_HDRS_INC) $(CMP_SRCS) -shared -o $@
 
 cmp_clean:
 	rm -f $(CMP_LIB) $(CMP_INC)/openssl/*; rmdir $(CMP_INC)/openssl $(CMP_INC) 2>/dev/null || true
