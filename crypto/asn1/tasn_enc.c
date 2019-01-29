@@ -108,7 +108,7 @@ int ASN1_item_ex_i2d(const ASN1_VALUE **pval, unsigned char **out,
 
     case ASN1_ITYPE_CHOICE:
         /* ASN1_OP_I2D_PRE appears unused */
-        if (asn1_cb && !asn1_cb(ASN1_OP_I2D_PRE, (ASN1_VALUE **)pval, it, NULL))
+        if (asn1_cb && !asn1_cb(ASN1_OP_I2D_PRE, pval, it, NULL))
             return 0;
         i = asn1_get_choice_selector_const(pval, it);
         if ((i >= 0) && (i < it->tcount)) {
@@ -120,7 +120,7 @@ int ASN1_item_ex_i2d(const ASN1_VALUE **pval, unsigned char **out,
         }
         /* Fixme: error condition if selector out of range */
         /* ASN1_OP_I2D_POST appears unused */
-        if (asn1_cb && !asn1_cb(ASN1_OP_I2D_POST, (ASN1_VALUE **)pval, it, NULL))
+        if (asn1_cb && !asn1_cb(ASN1_OP_I2D_POST, pval, it, NULL))
             return 0;
         break;
 
@@ -153,7 +153,7 @@ int ASN1_item_ex_i2d(const ASN1_VALUE **pval, unsigned char **out,
                 | V_ASN1_UNIVERSAL;
         }
         /* ASN1_OP_I2D_PRE appears unused */
-        if (asn1_cb && !asn1_cb(ASN1_OP_I2D_PRE, (ASN1_VALUE **)pval, it, NULL))
+        if (asn1_cb && !asn1_cb(ASN1_OP_I2D_PRE, pval, it, NULL))
             return 0;
         /* First work out sequence content length */
         for (i = 0, tt = it->templates; i < it->tcount; tt++, i++) {
@@ -188,7 +188,7 @@ int ASN1_item_ex_i2d(const ASN1_VALUE **pval, unsigned char **out,
         if (ndef == 2)
             ASN1_put_eoc(out);
         /* ASN1_OP_I2D_POST appears unused */
-        if (asn1_cb && !asn1_cb(ASN1_OP_I2D_POST, (ASN1_VALUE **)pval, it, NULL))
+        if (asn1_cb && !asn1_cb(ASN1_OP_I2D_POST, pval, it, NULL))
             return 0;
         return seqlen;
 

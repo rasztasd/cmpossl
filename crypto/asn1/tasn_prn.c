@@ -224,7 +224,7 @@ static int asn1_item_print_ctx(BIO *out, const ASN1_VALUE **fld, int indent,
 
         if (asn1_cb) {
             /* ASN1_OP_PRINT_PRE appears unused */
-            i = asn1_cb(ASN1_OP_PRINT_PRE, (ASN1_VALUE **)fld, it, &parg);
+            i = asn1_cb(ASN1_OP_PRINT_PRE, fld, it, &parg);
             if (i == 0)
                 return 0;
             if (i == 2)
@@ -249,7 +249,7 @@ static int asn1_item_print_ctx(BIO *out, const ASN1_VALUE **fld, int indent,
 
         if (asn1_cb) {
             /* ASN1_OP_PRINT_POST appears unused */
-            i = asn1_cb(ASN1_OP_PRINT_POST, (ASN1_VALUE **)fld, it, &parg);
+            i = asn1_cb(ASN1_OP_PRINT_POST, fld, it, &parg);
             if (i == 0)
                 return 0;
         }
